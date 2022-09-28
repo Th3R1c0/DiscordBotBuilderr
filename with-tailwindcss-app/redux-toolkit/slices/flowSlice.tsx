@@ -14,9 +14,17 @@ import {
   applyNodeChanges,
   applyEdgeChanges,
 } from "react-flow-renderer";
+
+
 const initialState = {
   nodes: initialNodes,
   edges: initialEdges,
+  blocks: {
+    BotActions: ['RandomResponse', 'Embed response', 'plain text response'],
+    Conditions: ['User condition', 'Channel condition', 'Variable condition'],
+    Inputs: ['number','channel','role','user','plain text']
+  }
+
 };
 /*
 from docs:
@@ -130,7 +138,14 @@ export const flow = createSlice({
       state.edges = applyEdgeChanges(action.payload, state.edges);
     },
     onConnect: (state, action) => {
-      state.edges = addEdge(action.payload, state.edges);
+      console.log(action.payload)
+
+     // if (state.blocks.BotActions.includes(action.payload.source.split('_')[0])){
+      //  console.log('it includes')
+      //}
+        state.edges = addEdge(action.payload, state.edges);
+      
+      
     },
   },
 });
@@ -153,5 +168,7 @@ export const selectCount = (state: { flow: { value: any; }; }) => state.flow.val
 
 export const selectNodes = (state: { flow: { nodes: any; }; }) => state.flow.nodes;
 export const selectEdges = (state: { flow: { edges: any; }; }) => state.flow.edges;
+
+export const selectBlocks = (state) => state.flow.blocks
 
 export default flow.reducer;

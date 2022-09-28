@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {addNode} from "../../redux-toolkit/slices/flowSlice";
+import {addNode, selectBlocks} from "../../redux-toolkit/slices/flowSlice";
 
 
 
 
 const Flowsidebar = () => {
-    const BotActions = ['RandomResponse', 'Embed response', 'plain text response'];
-    const Conditions = ['User condition', 'Channel condition', 'Variable condition']
     const dispatch = useDispatch()
+
+    const blocks = useSelector(selectBlocks)
 
     const onDragStart = (event, nodeType) => {
         event.dataTransfer.setData('application/reactflow', nodeType);
@@ -26,13 +26,19 @@ const Flowsidebar = () => {
           new slash command{" "}
         </button>
         <div className="divider"> Events </div>
-        {BotActions.map((action, index) => (
+        {blocks.BotActions.map((action, index) => (
           <button className="btn btn-primary " key={index} onDragStart={(event) => onDragStart(event, action)} draggable>
             {action}
           </button>
         ))}
         <div className="divider">conditions</div> 
-        {Conditions.map((condition, index) => (
+        {blocks.Conditions.map((condition, index) => (
+          <button className="btn btn-primary " key={index} onClick={() => dispatch(addNode({ button_type: condition }))} onDragStart={(event) => onDragStart(event, action)} draggable>
+            {condition}
+          </button>
+        ))}
+                <div className="divider">Inputs/variables</div> 
+        {blocks.Inputs.map((condition, index) => (
           <button className="btn btn-primary " key={index} onClick={() => dispatch(addNode({ button_type: condition }))} onDragStart={(event) => onDragStart(event, action)} draggable>
             {condition}
           </button>

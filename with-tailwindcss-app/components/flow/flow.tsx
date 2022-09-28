@@ -28,8 +28,10 @@ const nodeTypes = {
   RandomResponse: RandomResponseNode,
 };
 
+
+
 let id = 0;
-const getId = () => `dndnode_${id++}`;
+const getId = () => `_${id++}`;
 
 export function Flow() {
   const dispatch = useDispatch();
@@ -66,12 +68,12 @@ export function Flow() {
         y: event.clientY - reactFlowBounds.top,
       });
       const newNode = {
-        id: getId(),
+        id: `${type}${getId()}`,
         type,
         position,
         data: { label: `${type} node` },
       };
-
+      console.log(newNode.id)
       dispatch(addNode({newNode}))
     },
     [reactFlowInstance]

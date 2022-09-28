@@ -6,6 +6,9 @@ import { updateNodeProperties } from "../../redux-toolkit/slices/flowSlice";  //
 
 import { updateRandomResponsesNode} from "../../redux-toolkit/slices/flowSlice"
 
+import { selectBlocks} from "../../redux-toolkit/slices/flowSlice"
+
+
 const RandomResponseNode = ({ id, data }) => {
   const dispatch = useDispatch();
   const [text, setText] = useState('')
@@ -17,6 +20,19 @@ const RandomResponseNode = ({ id, data }) => {
     dispatch(updateRandomResponsesNode({id: id, randomResponse: text}))
     setText("");
   };
+
+  const blocks = useSelector(selectBlocks)
+
+  const handleEdgeConnections = (connection) => {
+    
+    if (blocks.BotActions.includes(connection.target)){
+        console.log('its trueee')
+    } else {
+        console.log('its falsee')
+    }
+    
+}
+
   return (
     <>
       <Handle type="target" position={Position.Top} />
@@ -38,7 +54,7 @@ const RandomResponseNode = ({ id, data }) => {
         <input type="text" value={text} onChange={handleInputChange} />
         <button className="btn btn-primary" onClick={handleSetResponses}>add response</button>
       </div>
-      <Handle type="source" position={Position.Bottom} />
+      <Handle type="source" position={Position.Bottom} isValidConnection={(connection) => handleEdgeConnections(connection)}  />
     </>
   );
 };

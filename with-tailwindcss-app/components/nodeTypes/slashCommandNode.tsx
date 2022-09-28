@@ -2,7 +2,7 @@ import React from "react";
 import { Handle, NodeProps, Position } from "react-flow-renderer";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useCallback } from "react";
-import { updateNodeProperties } from "../../redux-toolkit/slices/flowSlice";
+import { updateNodeProperties, selectBlocks } from "../../redux-toolkit/slices/flowSlice";
 
 interface slash_command_data {
   slashcommand: string;
@@ -24,11 +24,25 @@ const SlashCommandNode = ({ id, data }) => {
   const [slashCommand, setSlashCommand] = useState("");
   const handleInputChange = useCallback((e) => {
     setSlashCommand(e.target.value);
-  });
+  }, []);
   const handleSetSlashCommand = () => {
     dispatch(updateNodeProperties({ id: id, slashCommand: slashCommand, }));
     setSlashCommand("");
   };
+  const blocks = useSelector(selectBlocks)
+  const handleEdgeConnections = (connection) => {
+    
+    if (connection.target.slice('_')[0] == 'slashCommandNode'){
+        console.log('its a slash command')
+        
+    } else {
+        console.log('its not a slash command')
+        connection.target.slice('_')[0]
+       
+    }
+  }
+
+
   return (
     <>
       <Handle type="target" position={Position.Top} />
@@ -45,7 +59,7 @@ const SlashCommandNode = ({ id, data }) => {
         <input type="text" value={slashCommand} onChange={handleInputChange} />
         <button onClick={handleSetSlashCommand}>set slashcommand</button>
       </div>
-      <Handle type="source" position={Position.Bottom} />
+      <Handle type="source" position={Position.Bottom} isValidConnection={(connection) => handleEdgeConnections(connection)} />
     </>
   );
 };
