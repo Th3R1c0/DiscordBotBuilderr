@@ -24,6 +24,7 @@ import Flowsidebar from './flowsidebar'
 import SlashCommandNode from "../nodeTypes/inputs/slashCommandNode";
 import RandomResponseNode from "../nodeTypes/events/randomResponse";
 import ChannelNode from "../nodeTypes/conditions/channelNode"
+import { selectModalstate } from "../../redux-toolkit/slices/themeSlice";
 
 const nodeTypes = {
   slashCommandNode: SlashCommandNode,
@@ -83,8 +84,10 @@ export function Flow() {
     [reactFlowInstance]
   )
 
+  const modalstate = useSelector(selectModalstate)
+
   return (
-    <div className="w-screen h-screen  flex">
+    <div className={`w-screen h-screen flex ${modalstate ? 'blur' : ''}`}>
       
       <ReactFlowProvider>
       <Flowsidebar />

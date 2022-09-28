@@ -132,24 +132,9 @@ export const flow = createSlice({
       });
     },
 
-    //for practise:
-    updateNodeText: (state, action) => {
-      state.nodes = state.nodes.map((node) => {
-        if (node.id === action.payload.id) {
-          node.data = { ...node.data, label: action.payload.text };
-          console.log(action.payload);
-        }
-        return node;
-      });
-    },
-    updateNodeColor: (state, action) => {
-      state.nodes = state.nodes.map((node) => {
-        if (node.id === action.payload.id) {
-          let a = action.payload.color;
-          node.data = { ...node.data, color: action.payload.color };
-        }
-        return node;
-      });
+    deleteAllNodes: (state) => {
+      state.nodes = []
+      state.edges = []
     },
 
     onNodesChange: (state, action) => {
@@ -181,7 +166,8 @@ export const {
   addNode,
   updateNodeProperties,
   updateRandomResponsesNode,
-  updateChannelnode
+  updateChannelnode,
+  deleteAllNodes
 } = flow.actions;
 
 // The function below is called a selector and allows us to select a value from

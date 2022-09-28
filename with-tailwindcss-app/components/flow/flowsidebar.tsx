@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {addNode, selectBlocks} from "../../redux-toolkit/slices/flowSlice";
+import {addNode, deleteAllNodes, selectBlocks} from "../../redux-toolkit/slices/flowSlice";
 
 
 
@@ -33,7 +33,7 @@ const Flowsidebar = () => {
 
         <div className="w-full flex flex-col space-y-2">
         {blocks.BotActions.map((action, index) => (
-          <button className="btn btn-primary " key={index} onDragStart={(event) => onDragStart(event, action)}  draggable>{/*sends action(name of button) to store to be read by onDrop*/}
+          <button disabled={action != 'RandomResponse' ? true : false} className="btn btn-primary " key={index} onDragStart={(event) => onDragStart(event, action)}  draggable>{/*sends action(name of button) to store to be read by onDrop*/}
             {action}
           </button>
         ))}
@@ -47,7 +47,7 @@ const Flowsidebar = () => {
 
         <div className="w-full flex flex-col space-y-2">
         {blocks.Conditions.map((condition, index) => (
-          <button className="btn btn-primary " key={index} onDragStart={(event) => onDragStart(event, condition)} draggable>
+          <button disabled={condition != 'ChannelNode' ? true : false} className="btn btn-primary " key={index} onDragStart={(event) => onDragStart(event, condition)} draggable>
             {condition}
           </button>
         ))}
@@ -59,11 +59,17 @@ const Flowsidebar = () => {
                 
                 <div className="w-full flex flex-col space-y-2">
         {blocks.Inputs.map((input, index) => (
-          <button className="btn btn-primary " key={index} onDragStart={(event) => onDragStart(event, input)} draggable>
+          <button disabled={input != 'channel' ? true : false} className="btn btn-primary " key={index} onDragStart={(event) => onDragStart(event, input)} draggable>
             {input}
           </button>
         ))}
         </div>
+
+        <div className="divider text-md font-semibold">Reset</div> 
+
+        <button className="btn bg-red-600 hover:bg-red-700" onClick={() => dispatch(deleteAllNodes())}>
+            Delete all nodes
+          </button>
 
       </div>
     )
