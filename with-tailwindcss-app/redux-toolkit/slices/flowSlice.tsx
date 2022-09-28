@@ -21,7 +21,7 @@ const initialState = {
   edges: initialEdges,
   blocks: {
     BotActions: ['RandomResponse', 'Embed response', 'plain text response'],
-    Conditions: ['User condition', 'Channel condition', 'Variable condition'],
+    Conditions: ['User condition', 'ChannelNode', 'Variable condition'],
     Inputs: ['number','channel','role','user','plain text']
   }
 
@@ -110,6 +110,28 @@ export const flow = createSlice({
       });
     },
 
+    updateChannelnode: (state, action) => {
+      state.nodes = state.nodes.map((node) => {
+        if (node.id === action.payload.id) {
+          if (node.data.channels) {
+            node.data = {
+              ...node.data,
+              //add rest of payload to to node data, through map? or ..action.payload.updatedProperties
+              channels: [...node.data.channels, action.payload.channels]
+            };
+          } else {
+            node.data = {
+              ...node.data,
+              //add rest of payload to to node data, through map? or ..action.payload.updatedProperties
+              channels: [action.payload.channels]
+            };
+          }
+
+        }
+        return node;
+      });
+    },
+
     //for practise:
     updateNodeText: (state, action) => {
       state.nodes = state.nodes.map((node) => {
@@ -158,7 +180,8 @@ export const {
   updateNodeText,
   addNode,
   updateNodeProperties,
-  updateRandomResponsesNode
+  updateRandomResponsesNode,
+  updateChannelnode
 } = flow.actions;
 
 // The function below is called a selector and allows us to select a value from

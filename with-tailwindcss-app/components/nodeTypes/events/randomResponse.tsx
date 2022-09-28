@@ -2,11 +2,13 @@ import React from "react";
 import { Handle, NodeProps, Position } from "react-flow-renderer";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useCallback } from "react";
-import { updateNodeProperties } from "../../redux-toolkit/slices/flowSlice";  //i tried with this...will implement later mabey
+import { updateNodeProperties } from "../../../redux-toolkit/slices/flowSlice";  //i tried with this...will implement later mabey
 
-import { updateRandomResponsesNode} from "../../redux-toolkit/slices/flowSlice"
+import { updateRandomResponsesNode} from "../../../redux-toolkit/slices/flowSlice"
 
-import { selectBlocks} from "../../redux-toolkit/slices/flowSlice"
+import { selectBlocks} from "../../../redux-toolkit/slices/flowSlice"
+
+import { selectNodeThemes } from "../../../redux-toolkit/slices/themeSlice";
 
 
 const RandomResponseNode = ({ id, data }) => {
@@ -23,36 +25,36 @@ const RandomResponseNode = ({ id, data }) => {
 
   const blocks = useSelector(selectBlocks)
 
+  const Theme = useSelector(selectNodeThemes)
+
   const handleEdgeConnections = (connection) => {
     
-    if (blocks.BotActions.includes(connection.target)){
-        console.log('its trueee')
+    if(blocks.BotActions.includes(connection.target.split('_')[0])){
+      return false
     } else {
-        console.log('its falsee')
+      return true
     }
-    
+
 }
+
 
   return (
     <>
       <Handle type="target" position={Position.Top} />
-      <div
-        style={{
-          backgroundColor: "green",
-          padding: "10px",
-          width: "max",
-          height: "max",
-        }}
-      >
-        <h1> random response node </h1>
-        <p> responses: </p>
+      <div className={Theme.nodeWrapper}>
+        <h1 className={Theme.nodeHeading}> random response node </h1>
+        <p className={Theme.nodeSubHeading}> responses: </p>
 
         <div>{data?.randomResponses?.map((response, index) => (
-            <p key={index}>{response}</p>
+            <p key={index}> -   {response}</p>
         ))}</div>
+        
+        <div className="form-control ">
+        <button className="label" onClick={handleSetResponses}>add response</button>
+        <input className={Theme.nodeInput} type="text" value={text} onChange={handleInputChange} />
+        
+        </div>
 
-        <input type="text" value={text} onChange={handleInputChange} />
-        <button className="btn btn-primary" onClick={handleSetResponses}>add response</button>
       </div>
       <Handle type="source" position={Position.Bottom} isValidConnection={(connection) => handleEdgeConnections(connection)}  />
     </>

@@ -44,9 +44,10 @@ const GeneratedCodeSidebar = () => {
     //possible memoize to not run every time nodes from redux store update
     //console.log(nodes)
     return (
-        <div className="w-1/3 h-full flex flex-col p-4 bg-white">
-            <div className="divider"> Generated code</div>
+        <div className="w-1/4 h-full flex flex-col p-4 bg-gray-200">
+            <div className="divider text-2xl font-bold"> Generated code</div>
             <div className="mockup-code p-2">
+            <MyCoolCodeBlock code={code} language={'javascript'} showLineNumbers={true} />
             <MyCoolCodeBlock code={code} language={'javascript'} showLineNumbers={true} />
             </div>
         </div>

@@ -17,15 +17,19 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
 } from 'react-flow-renderer';
+import { Controls, MiniMap } from 'react-flow-renderer';
 
 import Flowsidebar from './flowsidebar'
 
-import SlashCommandNode from "../nodeTypes/slashCommandNode";
-import RandomResponseNode from "../nodeTypes/randomResponse";
+import SlashCommandNode from "../nodeTypes/inputs/slashCommandNode";
+import RandomResponseNode from "../nodeTypes/events/randomResponse";
+import ChannelNode from "../nodeTypes/conditions/channelNode"
 
 const nodeTypes = {
   slashCommandNode: SlashCommandNode,
   RandomResponse: RandomResponseNode,
+  ChannelNode: ChannelNode,
+
 };
 
 
@@ -80,11 +84,11 @@ export function Flow() {
   )
 
   return (
-    <div className="w-screen h-screen bg-blue-300 flex">
+    <div className="w-screen h-screen  flex">
       
       <ReactFlowProvider>
       <Flowsidebar />
-      <div className="w-full h-full" ref={reactFlowWrapper}>
+      <div className="w-full h-full bg-gradient-to-tl bg-[#36393F]" ref={reactFlowWrapper}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -96,7 +100,9 @@ export function Flow() {
           onDragOver={onDragOver}
           nodeTypes={nodeTypes}
           fitView
-        />
+        >
+          <Controls />
+         </ReactFlow>
         </div>
       </ReactFlowProvider>
       <GeneratedCodeSidebar />
