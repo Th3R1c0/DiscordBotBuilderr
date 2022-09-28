@@ -1,7 +1,7 @@
 
 
 
-const initialEdges = [
+const initialEdges: any[] = [
   ]
   
   
