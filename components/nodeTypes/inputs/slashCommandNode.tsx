@@ -2,7 +2,7 @@ import React from "react";
 import { Handle, NodeProps, Position } from "react-flow-renderer";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useCallback } from "react";
-import { updateNodeProperties, selectBlocks } from "../../../redux-toolkit/slices/flowSlice";
+import { updateNodeProperties, selectBlocks, updateCodeGenerator } from "../../../redux-toolkit/slices/flowSlice";
 
 interface slash_command_data {
   slashcommand: string;
@@ -26,6 +26,7 @@ const SlashCommandNode = ({ id, data }) => {
     if (connection.target.split('_')[0] == 'slashCommandNode') {
       return false
     } else {
+
       return true
     }
     

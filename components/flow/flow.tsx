@@ -78,7 +78,7 @@ export function Flow() {
         position,
         data: { label: `${type} node` },
       };
-      console.log(newNode.id)
+      
       dispatch(addNode({newNode}))
     },
     [reactFlowInstance]

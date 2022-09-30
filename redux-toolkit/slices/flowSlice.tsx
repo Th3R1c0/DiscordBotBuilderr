@@ -23,7 +23,8 @@ const initialState = {
     BotActions: ['RandomResponse', 'Embed response', 'plain text response'],
     Conditions: ['User condition', 'ChannelNode', 'Variable condition'],
     Inputs: ['number','channel','role','user','plain text']
-  }
+  },
+  generatedCode: [],
 
 };
 /*
@@ -63,6 +64,14 @@ export const flow = createSlice({
   name: "flow",
   initialState,
   reducers: {
+    updateCodeGenerator: (state, action) => {
+      const type = action.payload.type
+      const data = action.payload.data
+      state.generatedCode = [...state.generatedCode, {
+        type: type,
+        data: data,
+      }]
+    },
     addNode: (state, action) => {
       /*const newNode = {
         id: `${state.nodes.length + 1}`,
@@ -71,8 +80,10 @@ export const flow = createSlice({
         type: action.payload.nodeType,
       };*/
       state.nodes = [...state.nodes, action.payload.newNode];
-
-  
+      //if (action.payload.newNode.type == 'slashCommandNode'){
+        //  state.generatedCode.push({type: action.payload.newNode.type, data: []})
+     // }
+      
     },
     updateNodeProperties: (state, action) => {  //idk about this one boi, this one is to update slashcommands
       state.nodes = state.nodes.map((node) => {
@@ -147,12 +158,28 @@ export const flow = createSlice({
     onConnect: (state, action) => {
       console.log(action.payload)
 
-     // if (state.blocks.BotActions.includes(action.payload.source.split('_')[0])){
-      //  console.log('it includes')
-      //}
         state.edges = addEdge(action.payload, state.edges);
-      
-      
+            //console.log(connection)
+      //connection.source = slashCommandNode_0
+      //dispatch(updateCodeGenerator({type: connection.source, data: [{type: connection.target, data: []}]}))
+      if (action.payload.source.split('_')[0] == 'slashCommandNode'){
+        state.generatedCode = [...state.generatedCode, {
+          type: action.payload.source,
+          data: [{
+            type: action.payload.target, 
+            arguments: [],
+            data: []
+          }],
+        }]
+      } else {
+        state.generatedCode.map(command => {
+          command.data.map(e => {
+            if (e.type == action.payload.source){
+              e.data.push({type: action.payload.target, arguments: [], data: []})
+            }
+          })
+        })
+      }
     },
   },
 });
@@ -167,7 +194,8 @@ export const {
   updateNodeProperties,
   updateRandomResponsesNode,
   updateChannelnode,
-  deleteAllNodes
+  deleteAllNodes,
+  updateCodeGenerator
 } = flow.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -179,5 +207,7 @@ export const selectNodes = (state: { flow: { nodes: any; }; }) => state.flow.nod
 export const selectEdges = (state: { flow: { edges: any; }; }) => state.flow.edges;
 
 export const selectBlocks = (state) => state.flow.blocks
+
+export const selectCodeGenerated = (state) => state.flow.generatedCode
 
 export default flow.reducer;

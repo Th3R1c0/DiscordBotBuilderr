@@ -2,7 +2,7 @@
 
 import { CodeBlock, dracula } from "react-code-blocks";
 
-import {selectNodes} from '../redux-toolkit/slices/flowSlice'
+import {selectCodeGenerated, selectNodes, updateCodeGenerator} from '../redux-toolkit/slices/flowSlice'
 import { useSelector, useDispatch } from "react-redux";
 
 
@@ -34,7 +34,15 @@ client.on('interactionCreate', async interaction => {
 
 client.login('token');`
 
+const codeSnippets = [{
+  type: 'slashCommand',
+  code: (data) => `const data = new SlashCommandBuilder()
+	.setName('${data}')`
+}]
 
+const generateCodeSnippet = (data) => {
+  return codeSnippets[0].code(data)
+}
 
 
 
@@ -43,12 +51,16 @@ const GeneratedCodeSidebar = () => {
     //when a node is added, get the node.data.slashCommand: to return code `(slashcommand boilerplate), ${node.data.slashcommand} (more slashcommand boilerplate)`
     //possible memoize to not run every time nodes from redux store update
     //console.log(nodes)
+    const nodeCode = useSelector(selectCodeGenerated)
+    console.log(nodeCode)
     return (
         <div className="w-1/4 h-full flex flex-col p-4 bg-gray-200">
             <div className="divider text-2xl font-bold"> Generated code</div>
             <div className="mockup-code p-2">
-            <MyCoolCodeBlock code={code} language={'javascript'} showLineNumbers={true} />
-            <MyCoolCodeBlock code={code} language={'javascript'} showLineNumbers={true} />
+              {/* fake code for prototype
+            <MyCoolCodeBlock code={code} language={'javascript'} showLineNumbers={true} /> */}
+            <MyCoolCodeBlock code={nodeCode.length > 0 ? generateCodeSnippet(nodeCode) : 'start dragging blocks'} language={'javascript'} showLineNumbers={true} />
+             
             </div>
         </div>
     )
