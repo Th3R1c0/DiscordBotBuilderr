@@ -35,6 +35,7 @@ const SlashCommandNode = ({ id, data }) => {
   const Theme = useSelector(selectNodeThemes)
 
 
+
   return (
     <>
       <div className={Theme.nodeWrapper}>

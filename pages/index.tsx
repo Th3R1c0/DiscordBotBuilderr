@@ -7,7 +7,20 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectModalstate, toggleModal } from '../redux-toolkit/slices/themeSlice';
 
+import {db} from '../firebase'
+import { collection, addDoc } from "firebase/firestore"; 
+import { getDocs } from "firebase/firestore"; 
+
 const Home: NextPage = () => {
+  useEffect(() => {
+    const log = async () => {
+      const querySnapshot = await getDocs(collection(db, "users"));
+      querySnapshot.forEach((doc) => {
+      console.log(`doc id: => ${doc.id}`);
+    });
+    }
+    log()
+  }, [])
   const dispatch = useDispatch(toggleModal)
   const modalstate = useSelector(selectModalstate)
   return (
