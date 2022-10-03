@@ -24,7 +24,7 @@ const ChannelNode = ({ id, data }) => {
   };
 
   const blocks = useSelector(selectBlocks)
-
+  
   const Theme = useSelector(selectNodeThemes)
 
   const handleEdgeConnections = (connection) => {

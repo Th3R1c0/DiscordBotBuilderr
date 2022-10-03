@@ -15,10 +15,7 @@ export const Theme = createSlice({
     name: "Theme",
     initialState,
     reducers: {
-        updateNodeThemes: (state, action) => {
-            return 'nothing here eyt'
-        },
-        toggleModal: (state, action) => {
+        toggleModal: (state) => {
             state.modalstate = !state.modalstate
         }
 
@@ -27,6 +24,6 @@ export const Theme = createSlice({
 
 export const {toggleModal} = Theme.actions;
 
-export const selectNodeThemes = (state) => state.Theme.nodeThemes
-export const selectModalstate = (state) => state.Theme.modalstate
+export const selectNodeThemes = (state: { Theme: { nodeThemes: any; }; }) => state.Theme.nodeThemes
+export const selectModalstate = (state: { Theme: { modalstate: any; }; }) => state.Theme.modalstate
 export default Theme.reducer

@@ -21,7 +21,7 @@ const Home: NextPage = () => {
     }
     log()
   }, [])
-  const dispatch = useDispatch(toggleModal)
+  const dispatch = useDispatch()
   const modalstate = useSelector(selectModalstate)
   return (
 
